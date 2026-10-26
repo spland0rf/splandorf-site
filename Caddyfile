@@ -1,0 +1,36 @@
+# The front door of www.splandorf.com. install.sh fills in the placeholders:
+#   __HOST__            www.splandorf.com (gets an HTTPS certificate automatically)
+#   __APEX__            splandorf.com, which redirects to __HOST__
+#   __PURPLE_UPSTREAM__ purple-1's internal address and port, e.g. 10.138.0.7:8000
+__HOST__ {
+	encode gzip
+
+	# Conlang Forge runs on this VM.
+	redir /conlang /conlang/ 308
+	handle_path /conlang/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	# Purple runs on its own VM. Private: not linked from the homepage, not to be indexed.
+	redir /purple /purple/ 308
+	handle_path /purple/* {
+		header >X-Robots-Tag "noindex, nofollow"
+		reverse_proxy __PURPLE_UPSTREAM__ {
+			# a short wait, so a stopped purple-1 gives a quick error instead of a hanging page
+			lb_try_duration 2s
+			transport http {
+				dial_timeout 3s
+			}
+		}
+	}
+
+	# Everything else: the homepage.
+	handle {
+		root * /var/www/site
+		file_server
+	}
+}
+
+__APEX__ {
+	redir https://__HOST__{uri} permanent
+}
