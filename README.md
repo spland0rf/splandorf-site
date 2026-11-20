@@ -8,6 +8,7 @@ Each project keeps its own code and deployment in its own repository; this one o
 | `/` | `site/index.html` | — |
 | `/conlang/` | Conlang Forge, on this same VM (`127.0.0.1:8000`) | yes |
 | `/purple/` | Purple, on its own VM `purple-1` (internal address, port 8000) | **no** (private; also sent with `noindex`) |
+| `/green/` | Green, another service on the same `purple-1` server (it keeps the `/green` path to tell the services apart) | **no** (private; also sent with `noindex`) |
 | `splandorf.com/...` | redirects to `www.splandorf.com/...` | — |
 
 ## Publish (on the front VM)

@@ -24,6 +24,19 @@ __HOST__ {
 		}
 	}
 
+	# The other health services on purple-1 (the same server; it tells them apart by their path, so the path is kept:
+	# handle, not handle_path). Private like Purple: not linked from the homepage, not to be indexed.
+	redir /green /green/ 308
+	handle /green/* {
+		header >X-Robots-Tag "noindex, nofollow"
+		reverse_proxy __PURPLE_UPSTREAM__ {
+			lb_try_duration 2s
+			transport http {
+				dial_timeout 3s
+			}
+		}
+	}
+
 	# Everything else: the homepage.
 	handle {
 		root * /var/www/site

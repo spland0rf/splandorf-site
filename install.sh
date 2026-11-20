@@ -32,7 +32,7 @@ fi
 install -m 644 "$TMP" /etc/caddy/Caddyfile && rm -f "$TMP"
 systemctl reload caddy || systemctl restart caddy
 
-echo "Published. Homepage: https://$SITE_HOST/   Conlang: https://$SITE_HOST/conlang/   Purple: https://$SITE_HOST/purple/"
+echo "Published. Homepage: https://$SITE_HOST/   Conlang: https://$SITE_HOST/conlang/   Purple: https://$SITE_HOST/purple/   Green: https://$SITE_HOST/green/"
 if curl -fsS --max-time 4 "http://$PURPLE_UPSTREAM/api/health" >/dev/null; then
   echo "purple-1 answers at $PURPLE_UPSTREAM."
 else
